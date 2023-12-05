@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria Gourmet</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        }
+
+        th, td {
+        border: 1px solid rgb(0, 0, 0);
+        padding: 8px;
+        text-align: left;
+        }
+
+        th {
+        background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+        background-color: #f9f9f9;
+        }
+
+        tr:hover {
+        background-color: #e5e5e5;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html" target="_self">PRODUTOS</a>
+            <a href="conta.html" target="_self" rel="next">CONTA</a>
+            <a href="informacoes.html" target="_self" rel="next">INFORMAÇÕES</a>
+            <a href="pedidos.html" target="_self" rel="next">PEDIDOS</a>
+        </nav>
+    </header>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <td>Nome do produto</td>
+                    <td>Quantidade</td>
+                    <td>Valor total</td>
+                    <td>CPF</td>
+                    <td>Endereço</td>
+                </tr>
+            </thead>
+            <tbody id="pedidos"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const pedidolista = document.getElementById("pedidos");
+        pedidolista.innerHTML = "";
+
+        const login = sessionStorage.getItem("login");
+
+        if (login)
+            pesquisaPedidos(login);
+
+        function pesquisaPedidos(login){
+                const headers = new Headers();
+            fetch("http://localhost:3000/pedidos/" + login, {
+                method: "GET",
+                headers: headers
+            }).then((res) => res.json())
+            .then((pedidos) => {
+                for (const pedido of pedidos) {
+                    const tablerow = document.createElement("tr");
+
+                    const datanome = document.createElement("td");
+                    datanome.textContent = pedido.endereco;
+
+                    const dataquantidade = document.createElement("td");
+                    dataquantidade.textContent = pedido.quantidade;
+
+                    const datavalor = document.createElement("td");
+
+                    switch(pedido.idproduto){
+                        case 1:
+                            datanome.textContent = "Café cappucino";
+                            datavalor.textContent = "R$" + (15 * parseFloat(pedido.quantidade)).toFixed(2);
+                            break;
+                        case 1:
+                            datanome.textContent = "Café macchiato";
+                            datavalor.textContent = "R$" + (20 * parseFloat(pedido.quantidade)).toFixed(2);
+                            break;
+                        case 3:
+                            datanome.textContent = "Café marocchino";
+                            datavalor.textContent = "R$" + (17 * parseFloat(pedido.quantidade)).toFixed(2);
+                            break;
+                    }
+
+                    const datacpf = document.createElement("td");
+                    datacpf.textContent = pedido.cpf;
+
+                    const dataendereco = document.createElement("td");
+                    dataendereco.textContent = pedido.endereco;
+                    
+                    tablerow.appendChild(datanome);
+                    tablerow.appendChild(dataquantidade);
+                    tablerow.appendChild(datavalor);
+                    tablerow.appendChild(datacpf);
+                    tablerow.appendChild(dataendereco);
+
+                    pedidolista.appendChild(tablerow);
+                }
+            })
+        }
+
+    </script>
+</body>

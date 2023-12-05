@@ -1,0 +1,77 @@
+@charset "UTF-8";
+/* Paleta: #f19601, #d9534f, #251819 */
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Arial', sans-serif;
+}
+header{
+    margin: auto;
+    background-color: #d9534f;
+    height: 100px;
+    padding-top: 60px;
+}
+body{
+    background-color: #d9544f3a;
+}
+nav{
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+}
+nav > a{
+    padding: 50px; 
+}
+a{
+    text-decoration: none;
+    color:#f8f6f1;
+}
+a:hover{
+    color:#f19601;
+}
+div{
+    margin: 50px
+}
+p{
+    text-align: center;
+    font-size: 16px;
+    font-weight: normal;
+}
+div > h2{
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #251819;
+}
+#produtos{
+    display: flex;
+    justify-content: space-around;
+    margin: auto;
+    padding: auto;
+}
+button.b{
+    background-color: #f19601;
+    color:#251819;
+    border: none;
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 10%;
+    text-align: center;
+    margin-top: 10px;
+}
+button.b:hover{
+    background-color: #fc9d04;
+    color:#774c50;
+}
+#modal{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+#buttonsmodal{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+

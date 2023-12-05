@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria Gourmet</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+       div >#Registro > p{
+        text-align: left;
+        padding: auto;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: 50px;
+       }
+       div > p > a{
+        color:rgb(201, 85, 36);
+       }
+       input, button{
+        margin-left: 50px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        padding: 15px;
+        display: block;
+       }
+       
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../index.html" target="_self" rel="prev">PRODUTOS</a>
+            <a href="conta.html" target="_self">CONTA</a>
+            <a href="lnformacoes.html" target="_self">INFORMAÇÕES</a>
+            <a href="pedidos.html" target="_self">PEDIDOS</a>
+        </nav>
+    </header>
+    <main>
+        <div>
+            <div id="Registro" name="registro">
+                <p>Login: </p><input type="text" name="Nome" id="nome" placeholder="Ex: Joao da silva...">
+                <p>Senha: </p><input type="password" name="Senha" id="senha" placeholder="Ex: 12345...">
+                <p>Confirmar Senha: </p><input type="password" name="Confirmar" id="confirmar">
+                <button onclick="return registrar()">Enviar</button>
+            </div>
+            <br>
+            <p>Já possui conta? <a href="conta.html" target="_self">Clique aqui para logar</a></p>
+        </div>
+    </main>
+
+    <script>
+        function registrar() {
+            const nome = document.getElementById("nome").value;
+            const password = document.getElementById("senha").value;
+            const confirmar = document.getElementById("confirmar").value;
+            if(nome.length == 0 || password.length == 0 || confirmar.length == 0){
+                alert("Preencha todos os campos");
+                return false;
+            }
+            if(password != confirmar){
+                alert("Senha não coincide");
+                return false;
+            }
+
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json")
+            fetch("http://localhost:3000/registro", {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify({
+                    login: nome,
+                    senha: password,
+                })
+            }).then((res) => {
+                if(res.status != 200 && res.status != 201){
+                    alert("Ocorreu um erro");
+                    return false;
+                }
+                alert("Conta criada");
+                window.location.href = "./conta.html";
+            })
+
+            return false;
+        }
+    </script>
+</body>

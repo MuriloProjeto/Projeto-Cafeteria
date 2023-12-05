@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria Gourmet</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="imagens/cafeicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" target="_self">PRODUTOS</a>
+            <a href="paginas/conta.html" target="_self" rel="next">CONTA</a>
+            <a href="paginas/informacoes.html" target="_self" rel="next">INFORMAÇÕES</a>
+            <a href="paginas/pedidos.html" target="_self" rel="next">PEDIDOS</a>
+        </nav>
+    </header>
+
+    <div id="divuser" style="display: none;">
+    </div>
+
+    <div id="produtos">
+        <div>
+            <h2>Café cappucino<h2>
+            <img src="imagens/cappuccino-cup-.jpg" alt="Imagem de Café Cappucino" width="170px" height="140px">
+            <p>Valor: R$15,00</p>
+            <button id="capuccino" onclick="return abrirModal(1)" class="b">COMPRAR</button>
+        </div>
+        <div>
+            <h2>Café macchiato<h2>
+            <img src="imagens/manchiatto.jpg" alt="Imagem de Café macchiato" width="170px" height="140px">
+            <p>Valor: R$20,00</p>
+            <button id="macchiato" onclick="return abrirModal(2)" class="b">COMPRAR</button>
+        </div>
+        <div>
+            <h2>Café marocchino<h2>
+            <img src="imagens/marocchino.jpg" alt="Imagem de Café marocchino" width="170px" height="140px">
+            <p>Valor: R$17,00</p>
+            <button id="marocchino" onclick="return abrirModal(3)" class="b">COMPRAR</button>
+        </div>
+    </div>
+
+    <div id="divmodal">
+        <dialog id="modal">
+            <div>
+                <p>Quantidade: </p>
+                <input type="number" min="1" id="quantidade">
+                <p>CPF: </p>
+                <input type="text" name="cpf" id="cpf">
+                <p>Endereço: </p>
+                <input type="text" name="endereco" id="endereco">
+            </div>
+            <div id="buttonsmodal">
+                <button class="b" id="comprar" onclick="return criarPedido()">Comprar</button>
+                <button class="b" id="closemodal">Cancelar</button>
+            </div>
+        </dialog>
+    </div>
+
+    <script>
+        let produtoid = 1;
+
+        const modal = document.getElementById("modal");
+        const comprar = document.getElementById("comprar");
+        const quantidade = document.getElementById("quantidade");
+        const cpf = document.getElementById("cpf");
+        const endereco = document.getElementById("endereco");
+        const divuser = document.getElementById("divuser");
+        const nomeusuario = document.getElementById("username")
+        
+        closemodal.addEventListener("click", () => {
+            modal.close();
+        })
+
+        const username = sessionStorage.getItem("username")
+
+        if(username){
+            divuser.style["display"] = "block";
+            nomeusuario.textContent = username;
+        }
+
+        function abrirModal(id) {
+            produtoid = id;
+            modal.showModal();
+        }
+
+        function criarPedido() {
+            if(!sessionStorage.getItem("login")){
+                alert("Você precisa estar logado para fazer um pedido");
+                return false;
+            }
+            if(quantidade.value < 0){
+                alert("Informe uma quantidade válida");
+                return false;
+            }
+            if(cpf.value.length <= 0){
+                alert("Informe um CPF válido");
+                return false;
+            }
+            if(endereco.value.length <= 0){
+                alert("Informe um endereço válido");
+                return false;
+            }
+            
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json")
+            fetch("http://localhost:3000/pedidos", {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify({
+                    idpessoa: parseInt(sessionStorage.getItem("login")),
+                    idproduto: produtoid,
+                    quantidade: quantidade.value,
+                    cpf: cpf.value,
+                    endereco: endereco.value,
+                })
+            }).then((res) => {
+                if(res.status != 200 && res.status != 201){
+                    alert("Ocorreu um erro");
+                    return false;
+                }
+                alert("Pedido Criado");
+            })
+            
+            modal.close();
+        }
+    </script>
+</body>
+</html>
