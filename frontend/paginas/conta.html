@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cafeteria Gourmet</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../imagens/cafeicon.ico" type="image/x-icon">
     <style>
        div >#login > p{
         text-align: left;
@@ -41,6 +42,7 @@
                 <p>Login: </p><input type="text" name="Nome" id="nome" placeholder="Ex: Joao da silva...">
                 <p>Senha: </p><input type="password" name="Senha" id="senha" placeholder="Ex: 12345...">
                 <button onclick="return logar();">Entrar</button>
+                <button onclick="return deslogar();">Sair</button>
             </div>
             <br>
             <p>Não possui login cadastrado? <a href="criarconta.html" target="_self">Clique aqui para criar uma conta</a></p>
@@ -50,6 +52,8 @@
         function logar() {
             const nome = document.getElementById("nome").value;
             const password = document.getElementById("senha").value;
+            const deslogar = document.getElementById("deslogar");
+
             if(nome.length == 0 || password.length == 0){
                 alert("Preencha todos os campos");
                 return false;
@@ -72,11 +76,16 @@
                     alert("Logado com sucesso");
                     window.location.href = "../index.html";
                     sessionStorage.setItem("login", data.id);
-                    sessionStorage.setItem("username", nome)
+                    sessionStorage.setItem("username", nome);
                 });
             })
 
             return false;
+        }
+        function deslogar(){
+            sessionStorage.clear();
+            alert("Deslogado com sucesso");
+            window.location.href = "../index.html";
         }
     </script>
 </body>
