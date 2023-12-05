@@ -18,6 +18,7 @@
     </header>
 
     <div id="divuser" style="display: none;">
+        <p>Bem-vindo, <b><span id="username"></span></b></p>
     </div>
 
     <div id="produtos">
@@ -69,16 +70,16 @@
         const divuser = document.getElementById("divuser");
         const nomeusuario = document.getElementById("username")
         
-        closemodal.addEventListener("click", () => {
-            modal.close();
-        })
-
         const username = sessionStorage.getItem("username")
-
         if(username){
             divuser.style["display"] = "block";
             nomeusuario.textContent = username;
         }
+
+        closemodal.addEventListener("click", () => {
+            modal.close();
+            sessionStorage.clear();
+        })
 
         function abrirModal(id) {
             produtoid = id;
@@ -90,7 +91,7 @@
                 alert("Você precisa estar logado para fazer um pedido");
                 return false;
             }
-            if(quantidade.value < 0){
+            if(quantidade.value <= 0){
                 alert("Informe uma quantidade válida");
                 return false;
             }
